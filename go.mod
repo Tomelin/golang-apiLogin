@@ -1,4 +1,4 @@
-module apiLogin
+module github.com/Tomelin/golang-apiLogin.git
 
 go 1.12
 
