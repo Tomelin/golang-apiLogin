@@ -12,20 +12,8 @@ RUN go mod verify
 ADD main.go /app
 ADD src /app
 RUN cd /app/bin
-RUN export GOROOT=/app
+
+RUN cp -aR /app /usr/local/go/src/apiLogin
 RUN go get github.com/gorilla/mux
-RUN go build
 
-
-FROM alpine:3.9 
-
-WORKDIR /app
-RUN apk add --no-cache ca-certificates
-
-COPY --from=build /app/build_api /app/api
-
-# This container exposes port 8080 to the outside world
-EXPOSE 5002
-
-# Run the binary program produced by `go install`
-CMD ["/app/api"]
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
